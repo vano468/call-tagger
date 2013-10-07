@@ -1,21 +1,24 @@
 package com.vano468.calltagger;
 
 import android.app.ActivityManager;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ToggleButton;
 
 public class MainActivity extends Activity {
+
+    DialogFragment setTagDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setTagDialog = new SetTagDialog();
         initToggleButton();
     }
 
@@ -25,6 +28,7 @@ public class MainActivity extends Activity {
         } else {
             stopService(new Intent(this, CallService.class));
         }
+        setTagDialog.show(getFragmentManager(), "setTagDialog");
     }
 
     public void initToggleButton() {
@@ -41,5 +45,4 @@ public class MainActivity extends Activity {
         }
         return false;
     }
-
 }
