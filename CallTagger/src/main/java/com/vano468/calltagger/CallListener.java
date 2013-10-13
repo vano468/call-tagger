@@ -36,8 +36,13 @@ public class CallListener extends PhoneStateListener {
             case TelephonyManager.CALL_STATE_IDLE:
                 if (ringingStart == 1)
                     stopToastMessage();
-                if (callStart == 1)
-                    showNotification("Call ended", callNumber, "Call ended: " + callNumber);
+                if (callStart == 1) {
+                    //showNotification("Call ended", callNumber, "Call ended: " + callNumber);
+                    Intent intent = new Intent(context, SetTagActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra(SetTagActivity.CallNumber, callNumber);
+                    context.startActivity(intent);
+                }
                 callStart = 0;
                 ringingStart = 0;
                 break;
@@ -50,7 +55,8 @@ public class CallListener extends PhoneStateListener {
                 ringingStart = 1;
                 callNumber = incomingNumber;
                 //showNotification("Call ringing", callNumber, "Call ringing: " + callNumber);
-                startToastMessage(callNumber);
+                DBWorker dbWorker = new DBWorker(context);
+                startToastMessage(callNumber, dbWorker.getTagByNumber(callNumber));
                 break;
         }
     }
@@ -84,14 +90,14 @@ public class CallListener extends PhoneStateListener {
 
     }
 
-    public void startToastMessage(String text){
+    public void startToastMessage(String text, String tag){
 
         LayoutInflater li = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View toastView = li.inflate(R.layout.custom_toast, null);
 
         TextView toastTag = (TextView) toastView.findViewById(R.id.toastTag);
-        toastTag.setText("#nonegroup");
+        toastTag.setText(tag);
 
         TextView toastPhone = (TextView) toastView.findViewById(R.id.toastPhone);
         toastPhone.setText(text);

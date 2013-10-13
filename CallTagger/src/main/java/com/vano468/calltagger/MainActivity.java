@@ -28,7 +28,7 @@ public class MainActivity extends Activity {
         } else {
             stopService(new Intent(this, CallService.class));
         }
-        setTagDialog.show(getFragmentManager(), "setTagDialog");
+        //setTagDialog.show(getFragmentManager(), "setTagDialog");
     }
 
     public void initToggleButton() {
